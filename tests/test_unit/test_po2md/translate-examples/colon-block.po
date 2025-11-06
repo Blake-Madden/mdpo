@@ -1,0 +1,11 @@
+msgid ""
+msgstr ""
+
+msgid "Translate me."
+msgstr "Tradúceme."
+
+msgid "Do translate this inside."
+msgstr "Traducir esto también."
+
+msgid "Translate me too."
+msgstr "Tradúceme también."

@@ -122,3 +122,30 @@ def test___slots__(class_slots):
 
     for slot in slots:
         assert content.count(f'self.{slot}') > 1
+
+def test_skip_quarto_container_lines():
+    markdown_content = '''Translate me.
+
+::: note
+Do translate this inside.
+:::
+
+Translate me too.
+'''
+
+    expected_po = '''#
+msgid ""
+msgstr ""
+
+msgid "Translate me."
+msgstr ""
+
+msgid "Do translate this inside."
+msgstr ""
+
+msgid "Translate me too."
+msgstr ""
+'''
+
+    md2po = Md2Po(markdown_content)
+    assert str(md2po.extract()) == expected_po

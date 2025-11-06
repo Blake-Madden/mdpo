@@ -879,6 +879,27 @@ class Po2Md:
         ):
             return
 
+        # skip translation for ':::' lines (Quarto containers)
+        if text.lstrip().startswith(":::"):
+            lines = text.splitlines()
+            colon_lines = [
+                line for line in lines
+                if line.strip().startswith(":::")
+            ]
+
+            if colon_lines:
+                # preserve all ::: lines as-is
+                self.current_line += '\n'.join(colon_lines)
+    
+            # now remove them and continue translating the rest
+            text = '\n'.join([
+                line for line in lines
+                if not line.strip().startswith(":::")
+            ])
+
+            if not text.strip():
+                return  # no translatable content left
+
         if not self._inside_htmlblock[0]:
             if not self._inside_codeblock:
                 if self._inside_liblock and text == '\n':

@@ -863,6 +863,20 @@ class Md2Po:
         if raise_skip_event(self.events, 'text', self, block, text):
             return
 
+        # skip ':::' Quarto containers
+        if text.lstrip().startswith(":::"):
+            lines = text.splitlines()
+            filtered_lines = [
+                line for line in lines
+                if not line.strip().startswith(":::")
+            ]
+
+            if not filtered_lines:
+                return  # all lines were :::; skip this block
+
+            text = '\n'.join(filtered_lines)
+
+
         if not self._inside_htmlblock:
             if not self._inside_codeblock:
                 if any([  # softbreaks
